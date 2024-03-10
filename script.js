@@ -1,20 +1,16 @@
-const socket = io('https://smoothie-webserve.glitch.me/');
+const socket = io('https://smoothie-webserve-git.glitch.me/');
 var tnum = 0;
-//CHAT
 var roomKey = "";
 var id = "";
-//var message = "";
 const myText = document.getElementById("myText");
 const otherText = document.getElementById("otherText");
 const textContainer = document.getElementById("textView");
 myText.style.display = "none";
 otherText.style.display = "none"
-
 function login() {
   var verify = false
   var email = document.getElementById("email").value
   var password = document.getElementById("password").value
-  
   if (email == null || email == "" || password == null || password == "") {
     document.getElementById("loginAlert").innerHTML = "*Please enter the username or password.";
     setInterval(function() {
@@ -28,7 +24,7 @@ function login() {
   if (verify) {
     if (localStorage.getItem("ID") != null) {
       localStorage.setItem('ID', id);
-    };//i understand this now XD
+    };
     if (localStorage.getItem("roomKey") != null) {
       roomKey = localStorage.getItem("roomKey");
       $("#keyInput").val(roomKey)
@@ -49,7 +45,6 @@ function messageSubmit(event) {
   document.getElementById('messageimp').value = ""
   socket.emit('message', { roomKey: roomKey, message: message, id: id})
   message = id + ": " + message;
-  //------viewing the message------
     var cloned = myText.cloneNode(true); 
     cloned.textContent = message;
     cloned.style.display = "block";
@@ -57,11 +52,9 @@ function messageSubmit(event) {
   textContainer.scrollTop = textContainer.scrollHeight;
 }
 document.getElementById('messageForm').addEventListener('submit', messageSubmit);
-//SOCKET CHAT UPDATE THING FROM SOCKET
 socket.on("chatUpdate", (data) => {
   var amessage = data.message;
   console.log(amessage)
-  //otherdi = data.id;
   var key = data.id;
   var charKey = []
   var i = 0;
@@ -80,21 +73,16 @@ socket.on("chatUpdate", (data) => {
     textContainer.appendChild(cloned);
   }
 });
-//VIDEO
 const video = document.getElementById('videoElement');
 const othervideo = document.getElementById('videoElement2');
-
 function activateCamera() {
   navigator.mediaDevices.getUserMedia({ video: true })
   .then(stream => {
     video.srcObject = stream;
-    
     const videoTrack = stream.getVideoTracks()[0];
     const imageCapture = new ImageCapture(videoTrack);
-    // Capture a frame (you can capture frames continuously as needed)
     imageCapture.grabFrame()
       .then(imageBitmap => {
-        // Convert the imageBitmap to base64 data
         const canvas = document.createElement('canvas');
         canvas.width = imageBitmap.width;
         canvas.height = imageBitmap.height;
@@ -110,7 +98,6 @@ function activateCamera() {
   .catch(error => {
     console.error('Error accessing the camera:', error);
   });
-
 }
 function deactivateCamera() {
   video.srcObject = null;
