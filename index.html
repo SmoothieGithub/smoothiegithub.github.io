@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Smoothie</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div id="loginForm">
+    <div class="loginText"id="emailText">*Enter username</div>
+    <input type="text" id="email" class="loginInput" placeholder="Enter your username"">
+    <div class="loginText" id="passwordText">*Enter password</div>
+    <input type="text" id="password" class="loginInput" placeholder="Enter your password"> 
+    <h1 id="loginAlert"></h1>
+    <button type="submit" onclick="login()" value="Submit" class="loginButton">Login</button>
+    <div class="experiment">*This is a experiment aka does not matter, and please don't use your real password</div>
+  </div>
+  
+  <div id="hider">
+    <form id="keyForm">
+      <label for="key"></label>
+      <input type="text" id="keyInput" name="key" placeholder="Enter room ID">
+      <input type="submit" value="Change Room" class="button">
+      <div id="videoContainer">
+        <button id="cameraOnButton" onclick="activateCamera()" class="button">Turn camera on</button>
+        <button id="cameraOffButton" onclick="deactivateCamera()" class="button">Turn camera off</button>
+        <br>
+        <video id="videoElement" autoplay></video>
+        <br>
+        <video id="videoElement2" autoplay></video>
+      </div>
+    </form>
+    <div id="textChat">
+      <div id="textView">
+        <div id="myText"></div>
+        <div id="otherText"></div>
+      </div>
+      <form id="messageForm">
+        <input type="text" id="messageimp" placeholder="Send message">
+        <input type="submit" value="Send" id="button">
+      </form>
+    
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
