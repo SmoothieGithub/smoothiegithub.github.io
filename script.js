@@ -80,6 +80,7 @@ socket.on("chatUpdate", (data) => {
     cloned.textContent = message;
     cloned.style.display = "block";
     textContainer.appendChild(cloned);
+    textContainer.scrollTop = textContainer.scrollHeight;
   }
 });
 
