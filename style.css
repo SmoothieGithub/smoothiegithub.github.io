@@ -48,14 +48,14 @@ body {
   font-family: "Lato", sans-serif;
   font-weight: 700;
 }
-#loginForm {
+.loginForm {
   position: absolute;
   top: 50%;
   left: 50%;
   translate: -50% -50%;
   width: 250px;
-  height: 150px;
   background: #bfbfbf;
+  padding-bottom: 50px;
 }
 .loginInput {
   margin-left: 17px;
@@ -133,6 +133,7 @@ body {
   text-align: left;
   padding-left: 5px;
   padding-right: 5px;
+  margin-top: 6px;
 }
 #otherText{
   display: none;
@@ -147,6 +148,7 @@ body {
   padding-left: 5px;
   padding-right: 5px;
   float: left;
+  margin-top: 6px;
 }
 #ver{
   position: absolute;
@@ -166,4 +168,17 @@ body {
   color: white;
   background: #0055ff;
   border: 2px solid white;
+}
+.login-link-button {
+  background: none;
+  color: #2929ff;
+  border: none;
+  cursor: pointer;
+  margin-left: 17px;
+}
+#loginAccountForm {
+  display: block;
+}
+#createAccountForm {
+  display: none;
 }
