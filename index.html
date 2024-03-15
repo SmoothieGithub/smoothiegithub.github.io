@@ -13,14 +13,35 @@
 </head>
 
 <body>
-  <div id="loginForm">
-    <div class="loginText"id="emailText">*Enter username</div>
-    <input type="text" id="email" class="loginInput" placeholder="Enter your username"">
-    <div class="loginText" id="passwordText">*Enter password</div>
-    <input type="text" id="password" class="loginInput" placeholder="Enter your password"> 
-    <h1 id="loginAlert"></h1>
-    <button type="submit" onclick="login()" value="Submit" class="loginButton">Login</button>
-    <div class="experiment">*This is a experiment aka does not matter, and please don't use your real password</div>
+  <div id="logOrCreForms">
+    <div id="loginAccountForm" class="loginForm">
+      <div class="loginText"id="emailText">*Enter username</div>
+      <input type="text" id="email" class="loginInput" placeholder="Enter your username">
+      <div class="loginText" id="passwordText">*Enter password</div>
+      <input type="text" id="password" class="loginInput" placeholder="Enter your password"> 
+      <h1 id="loginAlert"></h1>
+      <button type="submit" onclick="login()" value="Submit" class="loginButton">Login</button>
+      <button id="formToggler" class="login-link-button" onclick="toggleForm()">*create account instead</button>
+      <div class="experiment">*if you just want to test, try username "test" and pw "testing123"</div>
+    </div>
+    
+    <div id="createAccountForm" class="loginForm">
+      <p class="loginText">if you dont enter your real email, you wont be able to change your password later.</p>
+      <br>
+      <br>
+      <div class="loginText" id="passwordText">*Enter your email</div> 
+      <input type="text" id="newEmail" class="loginInput" placeholder="Enter your username">
+      <div class="loginText"id="emailText">*Enter new username</div>
+      
+      <input type="text" id="newUsername" class="loginInput" placeholder="Enter your username">
+      <div class="loginText" id="passwordText">*Enter 
+new password</div>
+      <input type="text" id="newPassword" class="loginInput" placeholder="Enter your password"> 
+      <h1 id="loginAlert"></h1>
+      <button type="submit" onclick="newAcc()" value="Submit" class="loginButton">Login</button>
+      <button id="formToggler" class="login-link-button" onclick="toggleForm()">*Log-in instead</button>
+      <!--i fixed the form toggling thing, we were missing a single > -->
+    </div>
   </div>
   
   <div id="hider">
