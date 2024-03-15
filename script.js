@@ -77,6 +77,7 @@ function newAcc() {
 }
 socket.on("createResponse", (data) => {
   if (data.res == true) {
+    alert("please refresh to start chatting!")
     id = document.getElementById("newUsername").value
     console.log("sucessfully created new account and logged in!")
     if (localStorage.getItem("ID") != null) {
