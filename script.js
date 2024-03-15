@@ -1,46 +1,109 @@
 const socket = io('https://smoothie-webserve-git.glitch.me/');
 var tnum = 0;
-//CHAT
 var roomKey = "";
 var id = "";
-//var message = "";
 const myText = document.getElementById("myText");
 const otherText = document.getElementById("otherText");
 const textContainer = document.getElementById("textView");
+const createAccount = document.getElementById("createAccountForm")
+const loginAccount = document.getElementById("loginAccountForm")
 myText.style.display = "none";
 otherText.style.display = "none"
+var logOrCre = "log";
+
+//Login
+function toggleForm() {
+  if (logOrCre == "cre") {
+    document.getElementById("createAccountForm").style.display = 'none';
+    document.getElementById("loginAccountForm").style.display = "block";
+    logOrCre = "log";
+  } 
+  else {
+    document.getElementById("createAccountForm").style.display = 'block';
+    document.getElementById("loginAccountForm").style.display = "none";
+    logOrCre = "cre";
+  }
+}
 
 function login() {
-  var verify = false
   var email = document.getElementById("email").value
   var password = document.getElementById("password").value
-  
+
   if (email == null || email == "" || password == null || password == "") {
     document.getElementById("loginAlert").innerHTML = "*Please enter the username or password.";
-    setInterval(function() {
+    setTimeout(function() {
       document.getElementById("loginAlert").innerHTML = "";
     }, 3000)
+  } else {
+    socket.emit("loginAttempt", {username: email, password: password})
   }
-  else {
-    verify = true
-    id = email
-  }
-  if (verify) {
+}
+socket.on("loginResponse", (data) => {
+  if (data.res == true) {
+    id = document.getElementById("email").value
+    console.log("sucessfully logged in")
     if (localStorage.getItem("ID") != null) {
       localStorage.setItem('ID', id);
-    };//i understand this now XD
+    };
     if (localStorage.getItem("roomKey") != null) {
       roomKey = localStorage.getItem("roomKey");
       $("#keyInput").val(roomKey)
     };
     document.getElementById("hider").style.display = 'block';
-    document.getElementById("loginForm").style.display = 'none';
+    document.getElementById("logOrCreForms").style.display = 'none';
+    } else {
+    document.getElementById("loginAlert").innerHTML = "*incorrect username or password.";
+    setTimeout(function() {
+      document.getElementById("loginAlert").innerHTML = "";
+    }, 3000)
+    }
   }
+)
+function newAcc() {
+  console.log("new account")
+  var username = document.getElementById("newUsername").value
+  var email = document.getElementById("newEmail").value
+  var password = document.getElementById("newPassword").value
+  if (username == null || username == "" || password == null || password == "" || email == null || email == "") {
+    document.getElementById("loginAlert").innerHTML = "*Please enter a new username or password.";
+    setTimeout(function() {
+      document.getElementById("loginAlert").innerHTML = "";
+    }, 3000)
+  } else {
+
+    console.log("createAttempt sent")
+    socket.emit("createAttempt", {username: username, password: password, email: email,})
+  }
+}
+socket.on("createResponse", (data) => {
+  if (data.res == true) {
+    id = document.getElementById("newUsername").value
+    console.log("sucessfully created new account and logged in!")
+    if (localStorage.getItem("ID") != null) {
+      localStorage.setItem('ID', id);
+    };
+    if (localStorage.getItem("roomKey") != null) {
+      roomKey = localStorage.getItem("roomKey");
+      $("#keyInput").val(roomKey)
+    };
+    document.getElementById("hider").style.display = 'block';
+    document.getElementById("logOrCreForms").style.display = 'none';
+    } else {
+    document.getElementById("loginAlert").innerHTML = "*username is unavailable.";
+    setTimeout(function() {
+      document.getElementById("loginAlert").innerHTML = "";
+    }, 3000)
+    }
+})
+//Text
+function clearMessages() {
+  textContainer.innerHTML = "";
 }
 function roomKeySubmit(event) {
   event.preventDefault();
   roomKey = document.getElementById('keyInput').value;
   localStorage.setItem('roomKey', roomKey);
+  clearMessages()
 }
 document.getElementById('keyForm').addEventListener('submit', roomKeySubmit);
 function messageSubmit(event) {
@@ -92,7 +155,7 @@ function activateCamera() {
   navigator.mediaDevices.getUserMedia({ video: true })
   .then(stream => {
     video.srcObject = stream;
-    
+
     const videoTrack = stream.getVideoTracks()[0];
     const imageCapture = new ImageCapture(videoTrack);
     // Capture a frame (you can capture frames continuously as needed)
