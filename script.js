@@ -1,5 +1,5 @@
 //socket.emit("joinRoom", ({roomKey: roomKey, socketID: socket.id}))
-const socket = io('https://smoothie-webserve-git.glitch.me/');
+const socket = io('https://smoothie-webserve.glitch.me/');
 var tnum = 0;
 var roomKey = "";
 var id = "";
@@ -16,6 +16,55 @@ const arrow = document.getElementsByClassName('arrow');
 myText.style.display = "none";
 otherText.style.display = "none"
 var logOrCre = "log";
+
+//Check things
+function checkMyXP(xp) {
+  if (xp >= 50) {
+    myName.style.color = 'black'
+  }
+  if (xp >= 150) {
+    myName.style.color = 'red'
+  }
+  if (xp >= 300) {
+    myName.style.color = 'orange'
+  }
+  if (xp >= 500) {
+    myName.style.color = 'green'
+  }
+  if (xp >= 950) {
+    myName.style.color = 'blue'
+  }
+  if (xp >= 1200) {
+    myName.style.color = 'purple'
+  }
+  if (xp >= 1350) {
+    myName.style.color = 'pink'
+  }
+}
+function checkOtherXP(cloned, xp) {
+  if (xp >= 50) {
+    cloned.style.color = 'black'
+  }
+  if (xp >= 150) {
+    cloned.style.color = 'red'
+  }
+  if (xp >= 300) {
+    cloned.style.color = 'orange'
+  }
+  if (xp >= 500) {
+    cloned.style.color = 'green'
+  }
+  if (xp >= 950) {
+    cloned.style.color = 'blue'
+  }
+  if (xp >= 1200) {
+    cloned.style.color = 'purple'
+  }
+  if (xp >= 1350) {
+    cloned.style.color = 'pink'
+  }
+}
+
 socket.on("connect", () => {
   //console.log(socket.id)
   socket.emit("joinRoom", ({ roomKey: roomKey, socketID: socket.id }))
@@ -78,7 +127,9 @@ function newAcc() {
   var username = document.getElementById("newUsername").value
   var email = document.getElementById("newEmail").value
   var password = document.getElementById("newPassword").value
-  if (username == null || username == "" || password == null || password == "" || email == null || email == "") {
+  const regexthing = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  var tester = regexthing.test(email)
+  if (username == null || username == "" || password == null || password == "" || email == null || email == "" || tester == false) {
     document.getElementById("loginAlert").innerHTML = "*Please enter a new username or password.";
     setTimeout(function() {
       document.getElementById("loginAlert").innerHTML = "";
@@ -123,25 +174,28 @@ function roomKeySubmit(event) {
   socket.emit("joinRoom", ({ roomKey: roomKey, socketID: socket.id }))
   slideIn();
   slid = true;
+  document.getElementById("groupName").innerHTML = roomKey;
 }
 document.getElementById('keyForm').addEventListener('submit', roomKeySubmit);
+
 function messageSubmit(event) {
   event.preventDefault();
   message = document.getElementById('messageimp').value;
   document.getElementById('messageimp').value = "";
-  socket.emit('message', { roomKey: roomKey, message: message, id: id });
-  //displaying Name
-  var clonedName = myName.cloneNode(true);
-  clonedName.textContent = id;
-  clonedName.style.display = "block";
-  textContainer.appendChild(clonedName);
-  //------viewing the message------
-  var clonedMessage = myText.cloneNode(true);
-  clonedMessage.textContent = message;
-  clonedMessage.style.display = "block";
-  textContainer.appendChild(clonedMessage);
-  textContainer.scrollTop = textContainer.scrollHeight;
-
+  if (message !== null && message.trim() !== "") {
+    socket.emit('message', { roomKey: roomKey, message: message, id: id });
+    //displaying Name
+    var clonedName = myName.cloneNode(true);
+    clonedName.textContent = id;
+    clonedName.style.display = "block";
+    textContainer.appendChild(clonedName);
+    //------viewing the message------
+    var clonedMessage = myText.cloneNode(true);
+    clonedMessage.textContent = message;
+    clonedMessage.style.display = "block";
+    textContainer.appendChild(clonedMessage);
+    textContainer.scrollTop = textContainer.scrollHeight;
+  }
 }
 document.getElementById('messageForm').addEventListener('submit', messageSubmit);
 
@@ -161,14 +215,24 @@ socket.on("chatUpdate", (data) => {
   charKey.join("")
   key = charKey[0]
   var message = amessage.map(a => String.fromCharCode(a / key)).join('');
-  message = data.id + ": " + message;
   if (data.roomKey == roomKey) {
+
+    var clonedName = otherName.cloneNode(true);
+    checkOtherXP(clonedName, data.xp)
+    clonedName.textContent = data.id;
+    clonedName.style.display = "block";
+    textContainer.appendChild(clonedName);
+
     var cloned = otherText.cloneNode(true);
     cloned.textContent = message;
     cloned.style.display = "block";
     textContainer.appendChild(cloned);
     textContainer.scrollTop = textContainer.scrollHeight;
   }
+});
+
+socket.on("xp", function(xp) {
+  checkMyXP(xp)
 });
 
 //VIDEO
@@ -206,10 +270,11 @@ function deactivateCamera() {
   video.srcObject = null;
 }
 function slideOut() {
-  ;
+  console.log("slided out")
   document.getElementById("textChat").style.animation = "slideout 1s forwards";
 }
 function slideIn() {
+  console.log("slided in")
   document.getElementById("textChat").style.animation = "slidein 1s forwards";
 }
 document.querySelector(".arrow").addEventListener('click', function() {
