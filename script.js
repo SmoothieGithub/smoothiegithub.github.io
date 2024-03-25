@@ -1,5 +1,4 @@
-//socket.emit("joinRoom", ({roomKey: roomKey, socketID: socket.id}))
-const socket = io('https://smoothie-webserve.glitch.me/');
+const socket = io('https://smoothie-webserve-git.glitch.me/');
 var tnum = 0;
 var roomKey = "";
 var id = "";
@@ -12,6 +11,8 @@ const textContainer = document.getElementById("textView");
 const createAccount = document.getElementById("createAccountForm")
 const loginAccount = document.getElementById("loginAccountForm")
 const arrow = document.getElementsByClassName('arrow');
+//const jsonData = JSON.parse(BrowserFS.readFileSync("data.json"));
+
 
 myText.style.display = "none";
 otherText.style.display = "none"
@@ -122,6 +123,7 @@ socket.on("loginResponse", (data) => {
   }
 }
 )
+socket.on("niceTry", (haha) => {console.log(haha)})
 function newAcc() {
   console.log("new account")
   var username = document.getElementById("newUsername").value
@@ -129,7 +131,8 @@ function newAcc() {
   var password = document.getElementById("newPassword").value
   const regexthing = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   var tester = regexthing.test(email)
-  if (username == null || username == "" || password == null || password == "" || email == null || email == "" || tester == false) {
+  username = username.trim()
+  if (username.length() < 4 || username.length() > 16 || password == null || password == "" || email == null || email == "" || tester == false) {
     document.getElementById("loginAlert").innerHTML = "*Please enter a new username or password.";
     setTimeout(function() {
       document.getElementById("loginAlert").innerHTML = "";
@@ -183,7 +186,7 @@ function messageSubmit(event) {
   message = document.getElementById('messageimp').value;
   document.getElementById('messageimp').value = "";
   if (message !== null && message.trim() !== "") {
-    socket.emit('message', { roomKey: roomKey, message: message, id: id });
+    socket.emit('message', { roomKey: roomKey, message: message, socketID: socket.id, id: id});
     //displaying Name
     var clonedName = myName.cloneNode(true);
     clonedName.textContent = id;
