@@ -8,15 +8,11 @@ Need help Email SmoothieDevelopers@gmail.com
 Have a fun time texting
 
 
-VERSION 1.3.0
+VERSION 1.4.5
 
-version 1.4.0 may contain:
+DMs will come out in version 1.5.0
 
-xp/levels
-
-cosmetics
-
-better UI
+this version has some expeimental fetures/incomplete fetures
 
 
 
@@ -24,4 +20,7 @@ known bugs include:
 
 overflow text goes below the send button.
 
-accounts can be literally anything
+
+your socket id changes every time you connect to the server, so if you sign in twice you can only use the most recent sign in.
+
+if you get disconnected from the server, reload.
