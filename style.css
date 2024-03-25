@@ -4,30 +4,6 @@ html {
   overflow: hidden;
 }
 
-#peopleInfo {
-  display: none;
-}
-
-@keyframes slidein {
-    0% {
-      right: -1000px;
-    }
-
-    100% {
-      right: 0px;
-    }
-  }
-
-  @keyframes slideout {
-    0% {
-      right: 0px;
-    }
-
-    100% {
-      right: -1000px;
-    }
-  }
-
 body {
   background-color: #e9e2e2;
   color: black;
@@ -46,16 +22,7 @@ body {
   margin-right: 5px;
   font-size: 12px;
   font-family: 'Lato', sans-serif;
-  clear: both;
-}
 
-#otherName {
-  display: none;
-  float: left;
-  left: 0px;
-  font-size: 12px;
-  font-family: 'Lato', sans-serif;
-  clear: both;
 }
 
 .sendButton {
@@ -78,6 +45,27 @@ body {
   border-color: grey;
   font-family: "Lato", sans-serif;
   font-weight: 700;
+}
+
+#textChat {
+  position: absolute;
+  height: 100%;
+  width: 75%;
+  border: 1px solid black;
+  padding: 4px;
+  overflow: hidden;
+  right: 0px;
+  top: 0px;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+}
+
+#textView {
+  height: 95%;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 100%;
 }
 
 #hider {
@@ -214,7 +202,6 @@ body {
   margin-top: 6px;
   flex-direction: column;
   align-items: flex-start;
-  margin-left: 15px;
 }
 
 #ver {
@@ -269,15 +256,6 @@ body {
   margin: -10px;
 }
 
-#keyForm {
-  background: #d1d1d1;
-  width: 25%;
-  height: 100%;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-}
-
 @media only screen and (max-width: 800px) {
   html {
     height: 100%;
@@ -289,22 +267,6 @@ body {
     background-color: #e9e2e2;
     color: black;
     overflow: hidden;
-  }
-
-  #myName {
-    clear: both;
-    margin-right: 5px;
-    float: right;
-    font-size: 12px;
-    font-family: 'Lato', sans-serif;
-  }
-
-  #otherName {
-    clear: both;
-    margin-left: 5px;
-    float: left;
-    font-size: 12px;
-    font-family: 'Lato', sans-serif;
   }
 
   .button {
@@ -322,16 +284,25 @@ body {
   }
 
   #keyForm {
+    width: 100%;
     position: absolute;
     z-index: -10;
   }
 
   #textChat {
+    background-color: #ededed;
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
     height: 100%;
+    width: 100%;
+    border: 1px solid black;
+    padding: 4px;
+    overflow: hidden;
+    right: 0px;
+    top: 0px;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    bottom: 0px;
+    z-index: 10;
   }
 
   #textView {
@@ -341,11 +312,77 @@ body {
     overflow-x: hidden;
     max-height: 100%;
     margin-top: 65px;
-    left: 0px;
   }
 
   #hider {
     display: none;
+  }
+
+  #loginAlert {
+    color: red;
+    font-size: 10px;
+    margin-left: 17px;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+  }
+
+  #loginForm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 250px;
+    height: 150px;
+    background: #bfbfbf;
+  }
+
+  .loginInput {
+    margin-left: 17px;
+    margin-top: 20px;
+    left: 50%;
+    width: 80%;
+    height: 20px;
+    border-radius: 3px;
+    border: none;
+  }
+
+  .loginButton {
+    position: absolute;
+    margin-left: 17px;
+    bottom: 10%;
+    border-radius: 10px;
+    color: white;
+    background: #0055ff;
+    border: 2px solid white;
+  }
+
+  .loginButton:active {
+    position: absolute;
+    margin-left: 17px;
+    bottom: 10%;
+    border-radius: 10px;
+    color: white;
+    background: #0055ff;
+    border: 1px solid black;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+  }
+
+  .loginText {
+    font-size: 9px;
+    position: absolute;
+    margin-left: 17px;
+    margin-top: 7px;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+  }
+
+  .experiment {
+    font-size: 10px;
+    position: absolute;
+    top: 105%;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
   }
 
   #messageForm {
@@ -398,8 +435,6 @@ body {
     margin-top: 6px;
     flex-direction: column;
     align-items: flex-start;
-    margin-right: 5px;
-    word-wrap: break-word;
   }
 
   #otherText {
@@ -416,10 +451,9 @@ body {
     padding-right: 5px;
     float: left;
     margin-top: 6px;
+    margin-left: 5px;
     flex-direction: column;
     align-items: flex-start;
-    margin-left: 5px;
-    word-wrap: break-word;
   }
 
   #ver {
@@ -497,9 +531,7 @@ body {
     top: 0px;
     left: 0px;
     z-index: 10;
-    display: block;
   }
-
   #groupName {
     position: absolute;
     color: black;
@@ -508,59 +540,5 @@ body {
     font-family: "Lato", sans-serif;
     font-weight: 700;
     z-index: 100;
-    display: none;
-  }
-}
-
-#textChat {
-  position: absolute;
-  height: 100%;
-  width: 75%;
-  border: 1px solid black;
-  overflow: hidden;
-  right: 0px;
-  top: 0px;
-  font-family: "Lato", sans-serif;
-  font-weight: 700;
-  background: #d9d9d9;
-}
-
-#textView {
-  height: 100%;
-  width: 100%;
-  max-width: 100%;
-  max-height: 93%;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  max-height: 100%;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  padding: 5px;
-}
-
-#keyForm {
-  width: 25%;
-  height: 100%;
-  background: #d1d1d1;
-}
-
-@keyframes slidein {
-  0% {
-    right: -1000px;
-  }
-
-  100% {
-    right: 0px;
-  }
-}
-
-@keyframes slideout {
-  0% {
-    right: 0px;
-  }
-
-  100% {
-    right: -1000px;
   }
 }
