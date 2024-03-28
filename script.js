@@ -1,4 +1,4 @@
-const socket = io('https://smoothie-webserve-git.glitch.me/');
+const socket = io('https://smoothie-webserve.glitch.me/');
 var tnum = 0;
 var roomKey = "";
 var id = "";
@@ -11,14 +11,55 @@ const textContainer = document.getElementById("textView");
 const createAccount = document.getElementById("createAccountForm")
 const loginAccount = document.getElementById("loginAccountForm")
 const arrow = document.getElementsByClassName('arrow');
-//const jsonData = JSON.parse(BrowserFS.readFileSync("data.json"));
-
-
+const dm = document.getElementById("dm")
+const dmContainer = document.getElementById("dmContainer")
+const dmName = document.getElementById("dmName")
 myText.style.display = "none";
 otherText.style.display = "none"
 var logOrCre = "log";
 
 //Check things
+function switchToLogin() {
+  document.getElementById("loginHider").style.display = "block";
+  document.getElementById("homeHider").style.display = "none";
+}
+function switchToRegister() {
+  toggleForm()
+  document.getElementById("loginHider").style.display = "block";
+  document.getElementById("homeHider").style.display = "none";
+}
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  let expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function checkCookie() {
+  let user = getCookie("username");
+  let password = getCookie("password")
+  if (user != "" || password != "" || user != null || password != null) {
+    socket.emit("loginAttempt", { username: user, password: password })
+  } else {
+    return false
+  }
+}
 function checkMyXP(xp) {
   if (xp >= 50) {
     myName.style.color = 'black'
@@ -66,6 +107,49 @@ function checkOtherXP(cloned, xp) {
   }
 }
 
+
+//Dm
+function loadDms(dmList) {
+  if (dmList == null) {
+    console.log("sry no data")
+  }
+  else {
+    for (var i = 0; i < dmList.length; i++) {
+      var clonedDm = dm.cloneNode(true);
+      clonedDm.style.display = "block";
+      dmContainer.appendChild(clonedDm);
+      dmContainer.scrollTop = dmContainer.scrollHeight;
+      clonedDm.id = dmList[i]
+      clonedDm.addEventListener('click', function() {
+        changeRoom(this.id)
+      });
+      var clonedDmName = dmName.cloneNode(true);
+      clonedDmName.style.display = "block";
+      clonedDmName.innerHTML = dmList[i]
+      clonedDm.appendChild(clonedDmName);
+    }
+  }
+}
+
+function createDm() {
+  if (document.getElementById(document.getElementById("newDM").value)) {
+    console.log("Sorry already exists")
+  }
+  else {
+    var clonedDm = dm.cloneNode(true);
+    clonedDm.style.display = "block";
+    clonedDm.innerHTML = document.getElementById("newDM").value
+    dmContainer.appendChild(clonedDm);
+    dmContainer.scrollTop = dmContainer.scrollHeight;
+    clonedDm.id = document.getElementById("newDM").value
+    clonedDm.addEventListener('click', function() {
+      changeRoom(this.id)
+    });
+    socket.emit("createDM", document.getElementById("newDM").value, id)
+  }
+}
+
+
 socket.on("connect", () => {
   //console.log(socket.id)
   socket.emit("joinRoom", ({ roomKey: roomKey, socketID: socket.id }))
@@ -98,6 +182,8 @@ function login() {
     }, 3000)
   } else {
     socket.emit("loginAttempt", { username: email, password: password })
+    setCookie("username", email, 7);
+    setCookie("password", password, 7)
   }
 }
 socket.on("loginResponse", (data) => {
@@ -111,7 +197,9 @@ socket.on("loginResponse", (data) => {
       roomKey = localStorage.getItem("roomKey");
       $("#keyInput").val(roomKey)
     };
-    document.getElementById("hider").style.display = 'block';
+    document.getElementById("textHider").style.display = 'block';
+    document.getElementById("loginHider").style.display = 'none';
+    document.getElementById("homeHider").style.display = 'none';
     document.getElementById("logOrCreForms").style.display = 'none';
     socket.emit("joinRoom", ({ roomKey: roomKey, socketID: socket.id }))
     document.getElementById("groupName").innerHTML = roomKey
@@ -123,23 +211,21 @@ socket.on("loginResponse", (data) => {
   }
 }
 )
-socket.on("niceTry", (haha) => {console.log(haha)})
+socket.on("niceTry", (haha) => { console.log(haha) })
 function newAcc() {
-  console.log("new account")
   var username = document.getElementById("newUsername").value
   var email = document.getElementById("newEmail").value
   var password = document.getElementById("newPassword").value
   const regexthing = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   var tester = regexthing.test(email)
   username = username.trim()
-  if (username.length() < 4 || username.length() > 16 || password == null || password == "" || email == null || email == "" || tester == false) {
+  tester = true
+  if (password == null || password == "" || email == null || email == "" || tester == false) {
     document.getElementById("loginAlert").innerHTML = "*Please enter a new username or password.";
     setTimeout(function() {
       document.getElementById("loginAlert").innerHTML = "";
     }, 3000)
   } else {
-
-    console.log("createAttempt sent")
     socket.emit("createAttempt", { username: username, password: password, email: email, })
   }
 }
@@ -155,7 +241,10 @@ socket.on("createResponse", (data) => {
       roomKey = localStorage.getItem("roomKey");
       $("#keyInput").val(roomKey)
     };
-    document.getElementById("hider").style.display = 'block';
+
+    document.getElementById("textHider").style.display = 'block';
+    document.getElementById("loginHider").style.display = 'none';
+    document.getElementById("homeHider").style.display = 'none';
     document.getElementById("logOrCreForms").style.display = 'none';
     document.getElementById("groupName").innerHTML = roomKey
   } else {
@@ -165,6 +254,11 @@ socket.on("createResponse", (data) => {
     }, 3000)
   }
 })
+socket.on("loadedDMs", function(dmList) {
+  loadDms(dmList)
+});
+socket.on("plsrld", function() { l("please reload") })
+//END OF SOCKET THINGS---------------
 //Text
 function clearMessages() {
   textContainer.innerHTML = "";
@@ -179,6 +273,15 @@ function roomKeySubmit(event) {
   slid = true;
   document.getElementById("groupName").innerHTML = roomKey;
 }
+function changeRoom(groupName) {
+  roomKey = groupName;
+  localStorage.setItem('roomKey', roomKey);
+  clearMessages();
+  socket.emit("joinRoom", ({ roomKey: roomKey, socketID: socket.id }))
+  slideIn();
+  slid = true;
+  document.getElementById("groupName").innerHTML = groupName;
+}
 document.getElementById('keyForm').addEventListener('submit', roomKeySubmit);
 
 function messageSubmit(event) {
@@ -186,7 +289,7 @@ function messageSubmit(event) {
   message = document.getElementById('messageimp').value;
   document.getElementById('messageimp').value = "";
   if (message !== null && message.trim() !== "") {
-    socket.emit('message', { roomKey: roomKey, message: message, socketID: socket.id, id: id});
+    socket.emit('message', { roomKey: roomKey, message: message, socketID: socket.id, id: id });
     //displaying Name
     var clonedName = myName.cloneNode(true);
     clonedName.textContent = id;
@@ -273,11 +376,9 @@ function deactivateCamera() {
   video.srcObject = null;
 }
 function slideOut() {
-  console.log("slided out")
   document.getElementById("textChat").style.animation = "slideout 1s forwards";
 }
 function slideIn() {
-  console.log("slided in")
   document.getElementById("textChat").style.animation = "slidein 1s forwards";
 }
 document.querySelector(".arrow").addEventListener('click', function() {
