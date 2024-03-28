@@ -7,54 +7,70 @@
   <title>Smoothie</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
     rel="stylesheet">
-  </script>
+  <link rel="shortcut icon" type="image/jpg" href="/favicon.jpg" />
 </head>
 
-<body>
-  <div id="logOrCreForms">
-    <div id="loginAccountForm" class="loginForm">
-      <div class="loginText" id="emailText">*Enter username</div>
-      <input type="email" id="email" class="loginInput" placeholder="Enter your username">
-      <div class="loginText" id="passwordText" type="password">*Enter password</div>
-      <input type="password" id="password" class="loginInput" placeholder="Enter your password">
-      <h1 id="loginAlert"></h1>
-      <button type="submit" onclick="login()" value="Submit" class="loginButton">Login</button>
-      <button id="formToggler" class="login-link-button" onclick="toggleForm()">*create account instead</button>
-      <div class="experiment">*if you just want to test, try username "test" and pw "testing123"</div>
+<body onload="checkCookie()">
+  <div id="homeHider">
+    <h1>Smoothie</h1>
+    <p>A simple chat app</p>
+    <div id="topBar">
+      <button class="button" onclick="switchToLogin()">Login</button>
+      <button class="button" onclick="switchToRegister()">Sign up</button>
     </div>
+  </div>
+  <div id="loginHider">
+    <div id="logOrCreForms">
+      <div id="loginAccountForm" class="loginForm">
+        <div class="loginText" id="emailText">*Enter username</div>
+        <input type="email" id="email" class="loginInput" placeholder="Enter your username">
+        <div class="loginText" id="passwordText" type="password">*Enter password</div>
+        <input type="password" id="password" class="loginInput" placeholder="Enter your password">
+        <h1 id="loginAlert"></h1>
+        <button type="submit" onclick="login()" value="Submit" class="loginButton">Login</button>
+        <button id="formToggler" class="login-link-button" onclick="toggleForm()">*create account instead</button>
+        <div class="experiment">*if you just want to test, try username "test" and pw "testing123"</div>
+      </div>
 
-    <div id="createAccountForm" class="loginForm">
-      <p class="loginText">if you dont enter your real email, you wont be able to change your password later.</p>
-      <br>
-      <br>
-      <div class="loginText" id="passwordText">*Enter your email</div>
-      <input type="text" id="newEmail" class="loginInput" placeholder="Enter your username">
-      <div class="loginText" id="emailText">*Enter new username</div>
+      <div id="createAccountForm" class="loginForm">
+        <p class="loginText">if you dont enter your real email, you wont be able to change your password later.</p>
+        <br>
+        <br>
+        <div class="loginText" id="passwordText">*Enter your email</div>
+        <input type="text" id="newEmail" class="loginInput" placeholder="Enter your username">
+        <div class="loginText" id="emailText">*Enter new username</div>
 
-      <input type="text" id="newUsername" class="loginInput" placeholder="Enter your username">
-      <div class="loginText" id="passwordText">*Enter
-        new password</div>
-      <input type="text" id="newPassword" class="loginInput" placeholder="Enter your password">
-      <h1 id="loginAlert"></h1>
-      <button type="submit" onclick="newAcc()" value="Submit" class="loginButton">Login</button>
-      <button id="formToggler" class="login-link-button" onclick="toggleForm()">*Log-in instead</button>
-      <!--i fixed the form toggling thing, we were missing a single > -->
+        <input type="text" id="newUsername" class="loginInput" placeholder="Enter your username">
+        <div class="loginText" id="passwordText">*Enter
+          new password</div>
+        <input type="text" id="newPassword" class="loginInput" placeholder="Enter your password">
+        <h1 id="loginAlert"></h1>
+        <button type="submit" onclick="newAcc()" value="Submit" class="loginButton">Login</button>
+        <button id="formToggler" class="login-link-button" onclick="toggleForm()">*Log-in instead</button>
+        <!--i fixed the form toggling thing, we were missing a single > -->
+      </div>
     </div>
   </div>
 
-  <div id="hider">
+  <div id="textHider">
     <form id="keyForm">
       <label for="key"></label>
       <input type="text" id="keyInput" name="key" placeholder="Enter room ID">
       <input type="submit" value="Change Room" class="button">
       <br>
-      <button class="button">New DM</button>
+      <input type="text" id="newDM" class="keyInput" placeholder="New DM"></input>
+      <button type="submit" class="button" onclick="createDm()">New DM</button>
+
+      <div id="dmContainer">
+        <div id="dm" class="dm">
+          <span id="dmName" class="dmName"></span>
+        </div>
+      </div>
     </form>
     <div id="textChat">
       <div id="peopleInfo">
