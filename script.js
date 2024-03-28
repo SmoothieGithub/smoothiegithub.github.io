@@ -14,6 +14,7 @@ const arrow = document.getElementsByClassName('arrow');
 const dm = document.getElementById("dm")
 const dmContainer = document.getElementById("dmContainer")
 const dmName = document.getElementById("dmName")
+var  usedLogin = false
 myText.style.display = "none";
 otherText.style.display = "none"
 var logOrCre = "log";
@@ -174,7 +175,7 @@ function toggleForm() {
 function login() {
   var email = document.getElementById("email").value
   var password = document.getElementById("password").value
-
+  usedLogin = true;
   if (email == null || email == "" || password == null || password == "") {
     document.getElementById("loginAlert").innerHTML = "*Please enter the username or password.";
     setTimeout(function() {
@@ -188,7 +189,12 @@ function login() {
 }
 socket.on("loginResponse", (data) => {
   if (data.res == true) {
-    id = document.getElementById("email").value
+    if (usedLogin === false){
+      id = getCookie("username")
+    }
+    else {
+      id = document.getElementById("email").value
+    }
     console.log("sucessfully logged in")
     if (localStorage.getItem("ID") != null) {
       localStorage.setItem('ID', id);
@@ -310,6 +316,7 @@ document.getElementById('messageForm').addEventListener('submit', messageSubmit)
 socket.on("chatUpdate", (data) => {
   //console.log("update!" + data.message)
   var amessage = data.message;
+  console.log(amessage)
   //otherdi = data.id;
   var key = data.id;
   var charKey = []
