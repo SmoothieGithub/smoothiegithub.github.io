@@ -2,6 +2,54 @@ html {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  position: relative;
+}
+
+#homeHider {
+  display: block;
+}
+
+#loginHider {
+  display: none;
+}
+
+#textHider {
+  display: none;
+}
+
+#dmContainer {
+  position: absolute;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #d2d2d2;
+}
+
+.dm {
+  display: none;
+  width: 100%;
+  height: 65px;
+  background-color: #d1d1d1;
+}
+.dm:hover {
+  display: none;
+  width: 100%;
+  height: 65px;
+  background-color: #c7c7c7;
+}
+
+.dmName{
+  display: none;
+  float: middle;
+}
+
+#topBar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 65px;
+  background: #292929;
 }
 
 body {
@@ -58,6 +106,13 @@ body {
   top: 0px;
   font-family: "Lato", sans-serif;
   font-weight: 700;
+  background-color: #d6d6d6;
+}
+#keyForm {
+  width: 25%;
+  height: 100%;
+  position: absolute;
+  left: 0px;
 }
 
 #textView {
@@ -68,7 +123,7 @@ body {
   max-height: 100%;
 }
 
-#hider {
+#loginHider {
   display: none;
 }
 
@@ -285,6 +340,7 @@ body {
 
   #keyForm {
     width: 100%;
+    height: 100%;
     position: absolute;
     z-index: -10;
   }
@@ -314,7 +370,7 @@ body {
     margin-top: 65px;
   }
 
-  #hider {
+  #loginHider {
     display: none;
   }
 
