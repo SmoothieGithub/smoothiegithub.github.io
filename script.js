@@ -20,7 +20,7 @@ $("#send_button").click(function() {
         message: message,
       })
     };
-    fetch("https://smoothie2socket.glitch.me/send", options)
+    fetch("https://smoothie2prob.glitch.me/send", options)
       .then(response => {
         console.log(response);
       })
@@ -29,7 +29,7 @@ $("#send_button").click(function() {
   
   
   
-  const eventSource = new EventSource('https://smoothie2socket.glitch.me/events');
+  const eventSource = new EventSource('https://smoothie2prod.glitch.me/events');
   eventSource.onmessage = (event) => {
     console.log(event.data);
     const messages = JSON.parse(event.data);
