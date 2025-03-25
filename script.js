@@ -29,7 +29,7 @@ $("#send_button").click(function() {
   
   
   
-  const eventSource = new EventSource('https://smoothie2prod.glitch.me/events');
+const eventSource = new EventSource('https://smoothie2prod.glitch.me/events');
 eventSource.onmessage = (event) => {
   const messages = JSON.parse(event.data);
 
