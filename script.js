@@ -20,7 +20,7 @@ $("#send_button").click(function() {
         message: message,
       })
     };
-    fetch("https://smoothie2prob.glitch.me/send", options)
+    fetch("https://smoothie2prod.glitch.me/send", options)
       .then(response => {
         console.log(response);
       })
