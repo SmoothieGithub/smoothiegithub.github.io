@@ -33,7 +33,7 @@ $("#send_button").click(function() {
 eventSource.onmessage = (event) => {
   const messages = JSON.parse(event.data);
 
-  const messageList = document.querySelector('#messages');
+  const messageList = document.querySelector('#messages_container');
   messageList.innerHTML = ''; // Clear current messages
 
   // Display all messages
