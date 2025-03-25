@@ -30,17 +30,16 @@ $("#send_button").click(function() {
   
   
   const eventSource = new EventSource('https://smoothie2prod.glitch.me/events');
-  eventSource.onmessage = (event) => {
-    console.log(event.data);
-    const messages = JSON.parse(event.data);
-  
-    const messageList = document.querySelector('#messages_container');
-    messageList.innerHTML = ''; // Clear current messages
-  
-    // Display all messages
-    messages.forEach((message) => {
-      const li = document.createElement('li');
-      li.textContent = message.message;
-      messageList.appendChild(li);
-    });
-  };
+eventSource.onmessage = (event) => {
+  const messages = JSON.parse(event.data);
+
+  const messageList = document.querySelector('#messages');
+  messageList.innerHTML = ''; // Clear current messages
+
+  // Display all messages
+  messages.forEach((message) => {
+    const li = document.createElement('li');
+    li.textContent = message;
+    messageList.appendChild(li);
+  });
+};
